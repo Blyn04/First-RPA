@@ -107,11 +107,21 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message - Start" sap:VirtualizedContainerService.HintSize="452,141" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Unicorn Name Generator workflow started.&quot;]" />
     <ui:InputDialog Options="{x:Null}" OptionsString="{x:Null}" DisplayName="Input Dialog" sap:VirtualizedContainerService.HintSize="452,275" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="What is your name?" Title="Your Name" TopMost="False">
       <ui:InputDialog.Result>
         <OutArgument x:TypeArguments="x:String">[usersName]</OutArgument>
       </ui:InputDialog.Result>
     </ui:InputDialog>
+    <Assign DisplayName="Assign - Validate Name" sap:VirtualizedContainerService.HintSize="452,82" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[usersName]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[If(String.IsNullOrWhiteSpace(usersName), "Mysterious Stranger", usersName.Trim())]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:LogMessage DisplayName="Log Message - Name Info" sap:VirtualizedContainerService.HintSize="452,141" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Generating unicorn name for: &quot; + usersName]" />
     <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Chrome Find Unicorn Name" HealingAgentBehavior="Job" sap:VirtualizedContainerService.HintSize="452,838" sap2010:WorkflowViewState.IdRef="NApplicationCard_3" InteractionMode="DebuggerApi" ScopeGuid="abacc0d9-3acb-49b0-a15c-49d4cc45244f" Version="V2">
       <uix:NApplicationCard.Body>
         <ActivityAction x:TypeArguments="x:Object">
@@ -155,6 +165,7 @@
                 <uix:TargetAnchorable BrowserURL="rpasamples.com/unicornname" ContentHash="cONnb4eY3kO9qkvUnXfyYA" DesignTimeRectangle="1086, 368, 118, 19" ElementType="Text" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl id='lblUnicornName' tag='SPAN' /&gt;" Guid="c2fd0d2a-56d2-475a-8f33-dd76cca2e3eb" InformativeScreenshot="42b84b4491f90d5231348978a8183c2b.jpg" Reference="_qj7pjx_e06hKg_pYIhCMQ/AC1kN0Lme0OTtikdkbwwJA" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Find Unicorn Name' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
               </uix:NGetText.Target>
             </uix:NGetText>
+            <ui:LogMessage DisplayName="Log Message - Found Name" sap:VirtualizedContainerService.HintSize="416,141" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Found unicorn name: &quot; + unicornName]" />
           </Sequence>
         </ActivityAction>
       </uix:NApplicationCard.Body>
@@ -170,5 +181,7 @@
       </uix:NApplicationCard.TargetApp>
     </uix:NApplicationCard>
     <ui:WriteTextFile FileName="{x:Null}" Output="{x:Null}" DisplayName="Write Text File" File="[LocalResource.FromPath(&quot;Output\\name.txt&quot;)]" sap:VirtualizedContainerService.HintSize="452,167" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[unicornName]" />
+    <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" AutoCloseAfter="00:00:00" DisplayName="Message Box - Display Unicorn Name" sap:VirtualizedContainerService.HintSize="452,85" sap2010:WorkflowViewState.IdRef="MessageBox_1" Text="[&quot;🦄 Your Unicorn Name is: &quot; + unicornName + vbCrLf + vbCrLf + &quot;Saved to Output\name.txt&quot;]" />
+    <ui:LogMessage DisplayName="Log Message - Success" sap:VirtualizedContainerService.HintSize="452,141" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Workflow completed successfully!&quot;]" />
   </Sequence>
 </Activity>
